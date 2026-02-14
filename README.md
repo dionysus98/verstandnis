@@ -52,5 +52,24 @@
 ### 03.2 Hexadecimal numbers
 
 - Base 16 numbers
+- conversion between hex<->binary is super easy.
+  - any 4 bits you pick there's exactly one hexadecimal char that you can use. and only one char.
+  - so, if a file has 4000 bits -> 1000 hex
+- Let's say we have `456` decimal -> usually 0x456 hexa representation.
+- same a base 2, we will use 16 for multiplcation.
+  - So, base 16 means that you'll multiple the number with 16 to the power of it's index, starting from right most
+  - for 0x456,
+    - `6 * 16^0` -> `6 * 001` --> 6
+    - `5 * 16^1` -> `5 * 016` --> 80
+    - `4 * 16^2` -> `4 * 256` --> 1024
+    - -------------------------- 1110
+- hexa digit can be: [0~9, A~F] 0 to 9 continued with A to F (representing 10 to 15).
+- So something like for 0xfa3c,
+  - `c * 16^0` -> `12 * 0001` --> 12
+  - `3 * 16^1` -> `03 * 0016` --> 48
+  - `a * 16^2` -> `10 * 0256` --> 2560
+  - `f * 16^3` -> `15 * 4092` --> 6140
+  - ----------------------------- 64060
+- remember any 4 bits can be represented by a single hex.
 
-### 03.4 Character Encodings.
+### 03.3 Character Encodings.
