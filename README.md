@@ -119,3 +119,8 @@
   - by default on allocation, all the bits in the elements is assinged as 0.
 - The buffer size is fixed. They are a datastructure, specifically designed to work with binary data.
   - you can quickly insert, update and pull it out.
+
+- TODO:
+  - understand big and little endian
+  - understand floating point numbers
+  - understand binary arithemetic
