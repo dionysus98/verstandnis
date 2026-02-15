@@ -3,14 +3,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define BUFFER_SIZE 100
+
 int main()
 {
     bool exit = false;
 
     while (!exit)
     {
-        char *name;
-        char *content;
+        fflush(stdout);
+        char name[BUFFER_SIZE];
+        char content[BUFFER_SIZE];
+        FILE *fptr;
 
         int option;
 
@@ -24,10 +28,30 @@ int main()
         switch (option)
         {
         case 1:
-            printf("<FC> Enter filename:");
-            scanf("%s", &name);
-            printf("<FC> Enter the content:");
-            scanf("%s", &content);
+            printf("<FC> Enter filename: ");
+            scanf("%s", name);
+
+            printf("<FC> Enter the content: ");
+            scanf("%s", content);
+
+            fptr = fopen(name, "w");
+
+            if (fptr == NULL)
+            {
+                printf("Error opening the file%s\n", name);
+                return 1;
+            }
+
+            if (!fprintf(fptr, "%s", content))
+            {
+                printf("Error writing to file%s\n", name);
+                return 1;
+            }
+
+            printf("Content written successfully\n");
+
+            fclose(fptr);
+
             break;
 
         case 2:
@@ -36,7 +60,8 @@ int main()
             break;
 
         default:
-            break;
+            printf("Invalid option\n");
+            return 0;
         }
     }
 
