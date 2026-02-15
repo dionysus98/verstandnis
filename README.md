@@ -72,4 +72,50 @@
   - ----------------------------- 64060
 - remember any 4 bits can be represented by a single hex.
 
-### 03.3 Character Encodings.
+### 03.3 Character Sets/Encodings.
+
+#### 03.3.1 Character Sets
+
+- letters & symbols(chars) that a writing system uses, and a representation of assigning different number of those characters
+- most used char sets:
+  - [unicode](https://home.unicode.org/) (vast)
+    - it supports most characters used worldwide
+  - [ascii](https://en.wikipedia.org/wiki/ASCII)
+    - it's only for english and it only supports 128 chars
+    - it's a 7 bit code.
+    - man pages has ascii page on unix. try it out.
+- It's a subset of Unicode. So, it's chars have same number as unicode. (eg: 's' is 115, for both character sets.)
+
+#### 03.3.2 Character Encodings
+
+##### 03.3.2.1 Encoders:
+
+- take some data convert to binary
+- "whater" -> 001010101
+- in this case, a system of assigning a sequence of bytes (just binary, 1 byte = 8 bits) to a character.
+- the most common encoding is `utf-8`, defined by Unicode standard.
+  - `utf-8` (8 bit sequences) here each character is stored in either 8 bit, 16 bit, 32 bit...
+  - the MSB is always 0 in the 8 bit sequence.
+
+- for eg `"string"`:
+  - s -> 115 -> 0111 0011
+  - t -> 116 -> 0111 0100
+  - r -> 114 -> 0111 0010
+  - i -> 105 -> 0110 1001
+  - n -> 110 -> 0110 1110
+  - g -> 103 -> 0110 0111
+
+##### 03.3.2.2 Decoders:
+
+- take binary convert to some data
+- 001010101 -> "whater"
+
+### 03.4 Concept of buffer:
+
+- It's a container in memory. We allocate a space in memory with some size.
+- They act like an array.
+  - it has elements. (in nodejs each element holds 8 bits (1 byte))
+  - it's also indexed.
+  - by default on allocation, all the bits in the elements is assinged as 0.
+- The buffer size is fixed. They are a datastructure, specifically designed to work with binary data.
+  - you can quickly insert, update and pull it out.
