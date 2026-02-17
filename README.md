@@ -124,3 +124,20 @@
   - understand big and little endian
   - understand floating point numbers
   - understand binary arithemetic
+
+## 04. File System
+
+- In general (in simpler terms), file is just a sequence of bits.
+- Each sequence of bits can be represented differenly, eg: text, image, video, may interept these bits differenty.
+- In general, a file data may contain:
+  - name
+  - protection
+  - location
+  - type
+  - timestamps
+  - size
+  - ...
+- Everything is just files, even the whole OS is just a bunch of files orchestrated to work together. (in simpler terms)
+
+- Nodejs runs a process on top of your OS.
+  - So it starts to make syscalls to your OS. just like C.
