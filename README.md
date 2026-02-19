@@ -141,3 +141,32 @@
 
 - Nodejs runs a process on top of your OS.
   - So it starts to make syscalls to your OS. just like C.
+
+## 05. Streams:
+
+- Important to know. Buffers are core of steams.
+- what are streams?
+  - From node [docs](https://nodejs.org/api/stream.html#stream): It's an abstract interface for working with streaming data.
+  - Stream in CS represents continuos data (data flowing)
+  - transfering data in chunks rather than bulk transfer, if that helps. sendind data in chunks.
+  - size of chunk: 16kb by default in NodeJS.
+  - eg: file systems, network, stdout etc.
+
+### 05.1 [types of streams](https://nodejs.org/api/stream.html#types-of-streams):
+
+- Writable
+  - stream would have an internal buffer(16kb by default)
+  - `stream.write(data)`
+    - pushes buffer data to this internal buffer, continuously until it's filled, becoming a single chunk
+    - once it's filled, this chunk is the removed from the buffer (draining the buffer) and written to the target. (and we only write once).
+    - remember buffer is some memory in a specific location
+- Readable
+  - stream would have an internal buffer(16kb by default)
+  - `stream.push(data)`
+    - pushes buffer data to this internal buffer, continuously until it's filled, becoming a single chunk
+    - once it's filled, this chunk is the removed from the buffer (draining the buffer) and send as an event to `"data"` event. (note: `Stream` extends `EventEmitter` )
+    - `stream.on("data", (chunk) => {})` this how you read.
+- Duplex
+  - it has 2 internal buffers. acting as both read and write streams :o
+- Transform
+  - it has 2 internal buffers. kinda like duplex, but it transforms it's data.
