@@ -118,14 +118,13 @@ const fsp = require("node:fs/promises");
 
     // stream.write(buff);
 
-
     // console.log(stream.writableLength);
-    const writeMany = (n = 0) => {
-      for (let i = n; i < 1_000_000; i++) {
-        const buff = Buffer.from(`${i}\n`, "utf-8");
+    const writeMany = (iter = 1_000_000, n = 0) => {
+      for (let i = n; i < iter; i++) {
+        const buff = Buffer.from(`${i} `, "utf-8");
 
         // last possible write
-        if (i === 1_000_000 - 1) {
+        if (i === iter - 1) {
           return stream.end(buff);
           // .write after .end will return an exception.
         }
@@ -133,14 +132,15 @@ const fsp = require("node:fs/promises");
         if (!stream.write(buff)) {
           stream.once("drain", () => {
             drained++;
-            writeMany(i + 1);
+            writeMany(iter, i + 1);
           });
           break;
         }
       }
     };
 
-    writeMany();
+    writeMany(1_000_000);
+
   } catch (error) {
     console.error(error);
   } finally {
