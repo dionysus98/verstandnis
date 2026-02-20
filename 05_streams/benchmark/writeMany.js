@@ -50,25 +50,105 @@
 
 // === Streams way (naively) ===
 
+// const fsp = require("node:fs/promises");
+
+// (async () => {
+//   console.time("writeMany");
+//   let fh;
+//   let stream;
+//   try {
+//     fh = await fsp.open(__dirname + "/file.txt", "w");
+//     stream = fh.createWriteStream();
+
+//     for (let i = 0; i < 1_000_000; i++) {
+//       const buff = Buffer.from(`${i}\n`, "utf-8");
+//       stream.write(buff);
+//     }
+//   } catch (error) {
+//     console.error(error);
+//   } finally {
+//     await fh?.close();
+//     stream?.close();
+//   }
+//   console.timeEnd("writeMany");
+// })();
+
+// === Streams way (fixing memory issue) ===
+
 const fsp = require("node:fs/promises");
 
 (async () => {
   console.time("writeMany");
   let fh;
   let stream;
+  let drained = 0;
   try {
     fh = await fsp.open(__dirname + "/file.txt", "w");
     stream = fh.createWriteStream();
 
-    for (let i = 0; i < 1_000_000; i++) {
-      const buff = Buffer.from(`${i}\n`, "utf-8");
-      stream.write(buff);
-    }
+    // - capacity
+    // console.log(stream.writableHighWaterMark);
+    // - length
+    // console.log(stream.writableLength);
+
+    // const buff = Buffer.from("wrote!", "utf-8");
+
+    // again: 8 bits ->  1byte.
+    //        each bit -> 0 || 1.
+    //        1000 bytes = 1 kilobye
+    //        1000 kilobytes = 1 megabyte
+
+    // hex: 1a -> 1(4bits) + a(4bits) -> 8bits
+
+    // const buff = Buffer.alloc(1e8, 10);
+    // console.log(buff);
+    // const buff = Buffer.alloc(stream.writableHighWaterMark - 1, 10);
+    // `stream.write` would return false if stream's internal buffer has reached the HighWaterMark.
+    // console.log(stream.write(buff));
+    // console.log(stream.write(Buffer.alloc(1, "a")));
+    // console.log(stream.write(Buffer.alloc(1, "a")));
+    // console.log(stream.write(Buffer.alloc(1, "a")));
+
+    // stream.on("drain", () => {
+    //   console.log("drained: ");
+    //   console.log(stream.write(Buffer.alloc(1, "a")));
+    // });
+
+    // setInterval(() => {}, 1000);
+
+    // stream.write(buff);
+
+
+    // console.log(stream.writableLength);
+    const writeMany = (n = 0) => {
+      for (let i = n; i < 1_000_000; i++) {
+        const buff = Buffer.from(`${i}\n`, "utf-8");
+
+        // last possible write
+        if (i === 1_000_000 - 1) {
+          return stream.end(buff);
+          // .write after .end will return an exception.
+        }
+
+        if (!stream.write(buff)) {
+          stream.once("drain", () => {
+            drained++;
+            writeMany(i + 1);
+          });
+          break;
+        }
+      }
+    };
+
+    writeMany();
   } catch (error) {
     console.error(error);
   } finally {
-    await fh?.close();
-    stream?.close();
+    stream.on("finish", () => {
+      console.timeEnd("writeMany");
+      console.log("Drained:", drained);
+      fh?.close();
+      stream?.close();
+    });
   }
-  console.timeEnd("writeMany");
 })();
