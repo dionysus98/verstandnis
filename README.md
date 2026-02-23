@@ -170,3 +170,18 @@
   - it has 2 internal buffers. acting as both read and write streams :o
 - Transform
   - it has 2 internal buffers. kinda like duplex, but it transforms it's data.
+
+### 05.2 misc regarding encrytion [TODO, update notes later]
+
+these are all separate from each other
+
+- encryption/decryption
+  - secure data in some way (lot of algorithms are available)
+- compression
+  - reduce size of data
+- hashing,salting
+  - hashing is a bit different from encrpytion,
+  - after hashing it can be reversed
+  - so ususally input is hased and checked against the hashed value.
+- decoding/encoding
+  - usually binary to some other format.

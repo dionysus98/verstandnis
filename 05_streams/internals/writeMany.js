@@ -139,8 +139,7 @@ const fsp = require("node:fs/promises");
       }
     };
 
-    writeMany(1_000_000);
-
+    writeMany(10_00_000);
   } catch (error) {
     console.error(error);
   } finally {
