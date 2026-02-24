@@ -1,7 +1,7 @@
 const net = require("node:net");
 
-const PORT = 3399;
-const HOST = "127.0.0.1";
+const PORT = Number(process.env.CHAT_PORT);
+const HOST = process.env.CHAT_HOST;
 
 // create TPC server (note: IPC can also be created.)
 const server = net.createServer();

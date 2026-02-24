@@ -3,8 +3,8 @@ const readline = require("node:readline/promises");
 const process = require("node:process");
 const { dir } = require("node:console");
 
-const PORT = 3399;
-const HOST = "127.0.0.1";
+const PORT = Number(process.env.CHAT_PORT);
+const HOST = process.env.CHAT_HOST
 
 const rl = readline.createInterface({
   input: process.stdin,
