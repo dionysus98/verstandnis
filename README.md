@@ -185,3 +185,106 @@ these are all separate from each other
   - so ususally input is hased and checked against the hashed value.
 - decoding/encoding
   - usually binary to some other format.
+
+## 06. Networking
+
+Basic networking Concepts:
+
+- Ethernet cable
+  - cable where data is transmitted.
+- Switches
+  - connect computer to switch via cables
+  - login to the switch and manual configure it.
+  - multiple computers are connected to this switch.
+  - computer should have a networking card.
+- Network card:
+  - each computer these days has a networking card installed to it.
+  - and each of them have a unique MAC address configured to them
+  - A MAC address (aka physical address) is 48 bits (6 bytes) represented in Hex usaully
+- Packet:
+  - to send data from system A to system B, it will send something called a Packet to the switch.
+  - Packet will have data including:
+    - source : MAC address
+    - destination : MAC address
+    - data : binary
+  - The switch will handle the redirection of Packet from system A to system B based on their MAC address.
+
+- Routers (or how to communicate between different networks):
+  - routers are installed on top of the switches.
+  - Instead of MAC address, they work with IP address.
+  - Each router and it's systems would have unique IP addresses.
+  - And it's the router's job to assign IP address to different systems in it's network.
+  - So router is public IP and system is private IP.
+  - And this is how the internet works, in a nutshell.
+  - Also there are ports, which enables a single system to do different process based on it's port number.
+
+### 06.1 Networking Layers
+
+- Note, this is just a concept.
+
+1. Physical Layer (bits):
+
+- the most basic layer of network, your cables, system.
+- only concers itself with moving bits.
+- it has no idea about MAC address, IP address, switches etc. just moves data in bits.
+- summary: Signals, Binary transmission
+
+2. Data Link Layer (frames + switches):
+
+- Moves data in Frames using Switches.
+- So, It works with MAC address.
+
+3. Network Layer (Packets + routers):
+
+- Moves data in Packets using IP address.
+- Path Determination.
+
+4. Transport Layer (Segments):
+
+- Moves data in segments.
+- make sure packets are sent properly to other system in network.
+  - retries on failure, etc.
+- Here the port is also specified
+- So, TCP/UDP are some protocols used in this layer, end-to-end connections.
+
+5. Application Layer (Data):
+
+- Works with `Data`.
+- This is the layer of abstraction in which we develop our application
+
+### 06.2 Understanding Transport Layer
+
+- It gets the data from point A->B, has no idea about IP address, or how the data is being transmitted. it just makes sure data is received. [TODO, rework this point]
+- It adds port numbers to move data to application layers.
+- The two main protocols used for this Layer:
+  - TCP:
+    - make sure every single info/bit is being sent over by doing some extra work.
+    - eg: application data, password etc.
+  - UDP:
+    - it doesn't concerns whether the data is actually received by the target. it just sends.
+    - much faster, cause less work.
+    - eg: used in streaming services..
+
+#### 06.2.1 TCP:
+
+- Three way Handshake:
+  - The sender first sends packet to target machine.
+  - once received, target will acknowledge it, and send it back to sender.
+  - info for this is shared in headers.
+- TCP common headers (segments):
+  - source port: 16 bits
+  - destination port: 16 bits
+  - sequence number: 32 bits
+  - acknowledgement number: 32 bits
+  - length: 16 bits
+  - checksum: 16 bits
+  - Data: (optional)
+
+#### 06.2.2 UDP:
+
+- UDP headers (8byte):
+  - source port: 16 bits
+  - destination port: 16 bits
+  - Segment length: 16 bits
+  - checksum: 16 bits
+  - Data: (optional)
