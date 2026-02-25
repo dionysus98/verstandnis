@@ -1,0 +1,63 @@
+#'chat-app-clj.client/!client
+clj꞉chat-app-clj.client꞉> 
+; Error printing return value (ConnectException) at sun.nio.ch.Net/connect0 (Net.java:-2).
+; Connection refused
+clj꞉chat-app-clj.client꞉> 
+#'chat-app-clj.client/!client
+clj꞉chat-app-clj.client꞉> 
+#<Future@505a89fc: :pending>
+clj꞉chat-app-clj.client꞉> 
+nil
+clj꞉chat-app-clj.client꞉> 
+#<Future@7e47c5fd: :pending>
+clj꞉chat-app-clj.server꞉> 
+; > 
+#<Future@3508d79f: :pending>
+clj꞉chat-app-clj.client꞉> 
+; user msg nil
+; #error {
+;  :cause Broken pipe
+;  :via
+;  [{:type java.net.SocketException
+;    :message Broken pipe
+;    :at [sun.nio.ch.SocketDispatcher write0 SocketDispatcher.java -2]}]
+;  :trace
+;  [[sun.nio.ch.SocketDispatcher write0 SocketDispatcher.java -2]
+;   [sun.nio.ch.SocketDispatcher write SocketDispatcher.java 62]
+;   [sun.nio.ch.NioSocketImpl tryWrite NioSocketImpl.java 393]
+;   [sun.nio.ch.NioSocketImpl implWrite NioSocketImpl.java 409]
+;   [sun.nio.ch.NioSocketImpl write NioSocketImpl.java 439]
+;  [sun.nio.ch.NioSocketImpl$2 write NioSocketImpl.java 813]
+;   [java.net.Socket$SocketOutputStream implWrite Socket.java 1098]
+;   [java.net.Socket$SocketOutputStream write Socket.java 1085]
+;   [java.io.BufferedOutputStream flushBuffer BufferedOutputStream.java 123]
+;   [java.io.BufferedOutputStream flush BufferedOutputStream.java 203]
+;   [sun.nio.cs.StreamEncoder implFlush StreamEncoder.java 321]
+;   [sun.nio.cs.StreamEncoder flush StreamEncoder.java 150]
+;   [java.io.OutputStreamWriter flush OutputStreamWriter.java 249]
+;  [java.io.BufferedWriter flush BufferedWriter.java 306]
+;   [chat_app_clj.server$send_msg_BANG_ invokeStatic server.clj 18]
+;   [chat_app_clj.server$send_msg_BANG_ invoke server.clj 15]
+;   [chat_app_clj.server$eval10853$fn__10854$fn__10855 invoke server.clj 37]
+;   [chat_app_clj.server$eval10853$fn__10854 invoke server.clj 33]
+;   [clojure.core$binding_conveyor_fn$fn__5844 invoke core.clj 2047]
+;   [clojure.lang.AFn call AFn.java 18]
+;   [java.util.concurrent.FutureTask run FutureTask.java 328]
+;  [java.util.concurrent.ThreadPoolExecutor runWorker ThreadPoolExecutor.java 1095]
+;   [java.util.concurrent.ThreadPoolExecutor$Worker run ThreadPoolExecutor.java 619]
+;   [java.lang.Thread run Thread.java 1447]]}
+#object[java.net.Socket 0x29cea46c "Socket[addr=/127.0.0.1,port=3399,localport=44206]"]
+clj꞉chat-app-clj.client꞉> 
+true
+clj꞉chat-app-clj.server꞉> 
+[#object[java.net.Socket 0x1605f87d "Socket[addr=/127.0.0.1,port=44206,localport=3399]"]]
+clj꞉chat-app-clj.server꞉> 
+#<Future@e4b2e24: :pending>
+clj꞉chat-app-clj.server꞉> 
+; > 
+#<Future@3ad23d86: :pending>
+clj꞉chat-app-clj.client꞉> 
+; user msg nil
+false
+clj꞉chat-app-clj.server꞉> 
+; nREPL Connection was closed for client: nrepl-client-3, port: 34089
