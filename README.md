@@ -296,7 +296,7 @@ Basic networking Concepts:
 - note: There are to IP versions.
   - IPv4
   - IPv6
-- IPv4 is 32bits
+- IPv4 is 32 bits
   - it is divided into 4 portions.
   - eg:
     - 00001111.10101011.11111110.00000001
@@ -336,4 +336,23 @@ Basic networking Concepts:
   - wasted potential, since the network portion is 8 bits.
 
 ### 06.4 DNS
+
 - PC -> TCP req (send Packets) to google.com -> DNS server -> TCP resp (including domain's IP add) -> PC
+
+### 06.5 IPv6
+
+- Even though IPv4 is still popular, but it's out of addresses hence IPv6 was introduced.
+- The change between IPv4 and IPv6 only affects the `network layer` (layer 3).
+- IPv6 is 128 bits (32 hex)
+- It is separated into 8 portions, where each portion is 16 bits.
+- eg:
+  2401:1900:8de5:607e:c061:27c:9d78:2ac2
+- representation conventions:
+  - in each portion you can exclude all leading 0s
+  - removing 0 portions can only be done once in a addr.
+- The loopback addr for IPv6 is:
+  - 0000:0000:0000:0000:0000:0000:0000:0001
+  - ::1 (different repr for the same addr above)
+- So, comparison:
+  - IPv4 -> 2^32 -> 4~ billion.
+  - IPv6 -> 2^128 -> 340~ trillion.
