@@ -288,3 +288,49 @@ Basic networking Concepts:
   - Segment length: 16 bits
   - checksum: 16 bits
   - Data: (optional)
+
+### 06.3 IPv4
+
+- IP -> Internet Protocol.
+- IP and IP address are different things technically.
+- note: There are to IP versions.
+  - IPv4
+  - IPv6
+- IPv4 is 32bits
+  - it is divided into 4 portions.
+  - eg:
+    - 00001111.10101011.11111110.00000001
+    - 15.171.254.1 (in decimal format)
+
+  - 8 bits for each portion.
+  - supports 2^32 unique addresses
+  - we are running out of addresses :c
+
+- subnet mask:
+  - to differentiate between portions.
+  - either net or host portion.
+  - explain with eg:
+    - For this Ip addr.
+      - 00001111.10101011.11111110.00000001
+      - - 15.171.254.1 (same in decimal format)
+    - The subnet mask could be:
+      - 11111111.11111111.11111111.00000000
+    - This means first 24 bits are net portions
+    - The 8 bits are host portions
+    - The subnet mask is represent in the address like this:
+      - 15.171.254.1/24
+    - So, in this example, this network can support 254 hosts (8bits).
+  - note: routers by default only work with net portions.
+
+- Private IP addresses:
+- we 3 ranges of private address.
+  | from | to | mask |
+  | ---- | -- | ---- |
+  | 10.0.0.0 | 10.255.255.255 | 10.0/8 |
+  | 172.16.0.0 | 172.31.255.255 | 172.16/12 |
+  | 192.168.0.0 | 192.168.255.255 | 192.168/16 |
+- also there's loopback address.
+  | from | to | mask |
+  | ---- | -- | ---- |
+  | 127.0.0.0 | 127.255.255.255 | 127.0.0.0/8 |
+  - wasted potential, since the network portion is 8 bits.
