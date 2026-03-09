@@ -334,3 +334,6 @@ Basic networking Concepts:
   | ---- | -- | ---- |
   | 127.0.0.0 | 127.255.255.255 | 127.0.0.0/8 |
   - wasted potential, since the network portion is 8 bits.
+
+### 06.4 DNS
+- PC -> TCP req (send Packets) to google.com -> DNS server -> TCP resp (including domain's IP add) -> PC
