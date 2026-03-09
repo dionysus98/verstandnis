@@ -265,7 +265,7 @@ Basic networking Concepts:
     - much faster, cause less work.
     - eg: used in streaming services..
 
-#### 06.2.1 TCP:
+#### 06.2.1 TCP (Transmission Control Protocol):
 
 - Three way Handshake:
   - The sender first sends packet to target machine.
@@ -356,3 +356,15 @@ Basic networking Concepts:
 - So, comparison:
   - IPv4 -> 2^32 -> 4~ billion.
   - IPv6 -> 2^128 -> 340~ trillion.
+
+### 0.6\_ MISC - TODO finish uploader application
+
+### 06.7 UDP (User Datagram Protocol)
+
+- used where speed is the main concern.
+- UDP is connection less.
+  - i.e, the segments are sent whether the other connection is present or not.
+- UDP doesn't care if server is present or not.
+  - It'd just send the request/message and won't wait for acknowledgement/response.
+
+- 
