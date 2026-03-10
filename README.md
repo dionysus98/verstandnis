@@ -367,4 +367,29 @@ Basic networking Concepts:
 - UDP doesn't care if server is present or not.
   - It'd just send the request/message and won't wait for acknowledgement/response.
 
-- 
+## 07. HTTP :D
+
+- `http` is in the Application layer (layer 5).
+- It governs the data that's being transfer from TCP.
+- there are 3 versions of http:
+  - http1.1 - TCP
+  - http2 - TCP
+  - http3 - UDP
+
+- it's a client-server model.
+  - between client and server a TCP connection is established.
+  - `Message`
+    - from client to server (Request):
+      - Initially once connection is established, for the 1st TCP segment, the client will send,
+        - headers
+        - method
+        - url
+      - In another conseqent segments, the client will send body in chunks.
+    - from server to client (Response):
+      - for the 1st segment, the server sends response with status code and headers
+      - In another conseqent segments, the server will send body in chunks.
+  - `Connection types (http/1.1)`:
+    - connection: keep-alive
+      - optional timeout and max headers can be set
+      - eg:- keep-alive: timeout=8, max=800
+    - connection: close
