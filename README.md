@@ -367,7 +367,7 @@ Basic networking Concepts:
 - UDP doesn't care if server is present or not.
   - It'd just send the request/message and won't wait for acknowledgement/response.
 
-## 07. HTTP :D
+## 07. [HTTP :D](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview)
 
 - `http` is in the Application layer (layer 5).
 - It governs the data that's being transfer from TCP.
