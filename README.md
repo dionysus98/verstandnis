@@ -371,10 +371,10 @@ Basic networking Concepts:
 
 - `http` is in the Application layer (layer 5).
 - It governs the data that's being transfer from TCP.
-- there are 3 versions of http:
-  - http1.1 - TCP
-  - http2 - TCP
-  - http3 - UDP
+- there are 3 versions of http that are currently used:
+  - http1.1 - TCP (dominant)
+  - http2 - TCP (resonable amount)
+  - http3 - UDP (maybe used)
 
 - it's a client-server model.
   - between client and server a TCP connection is established.
@@ -393,3 +393,79 @@ Basic networking Concepts:
       - optional timeout and max headers can be set
       - eg:- keep-alive: timeout=8, max=800
     - connection: close
+
+### 07.1 MIME types [(Media types)](https://www.iana.org/assignments/media-types/media-types.xhtml):
+
+- Content-Type header is used determine the type of the message payload.
+  - it takes the mime-type as it's value.
+  - format := [type]/[subtype];key=value
+  - key=value is optional. type/subtype is required.
+  - eg:- text/css, text/html;chatset=utf-8, application/json
+- Classes:
+  - Multipart(multiple files)
+    - eg:- multipart/form-data, message/http
+  - Discrete(single file)
+    - eg:- text/css, application/json
+
+### 07.2 HTTP Methods
+
+- Methods are specified only for the requests. not in responses.
+- Idempotent:
+  - An operation is called `idempotent` when doing it mulitple times will not have any additional affects than the first time.
+  - Unique operation
+  - Only first execution will be processed, the rest should be ignored for it be idempotent.
+  - So, in terms of HTTP, a request is called idempotent, when it doesn't change the state of the server upon multiple delivery of the same request.
+- Different Methods:
+  - GET:
+    - use to request data
+    - no body
+    - idempotent:
+      - if we send 100 requests for the same GET request, you'll receive exact same thing.
+  - POST:
+    - use to create a resource or perform an action.
+    - has body
+    - NOT idempotent:
+      - if we send same POST request to create a comment on a blog, two comments will be created
+  - PUT:
+    - To create or fully update.
+    - has body
+    - idempotent:
+      - if we send same PUT request to create user, same operation is expected to be executed. i.e., to create the same user over and over again.
+  - PATCH:
+    - To partially update
+    - has body
+    - idempotent (depends)
+      - `yes`: update email of user
+      - `no`: update a counter value.
+  - DELETE:
+    - To delete a specified resource
+    - has body (optional)
+    - idempotent:
+      - if we send same DELETE request to delete a comment on a blog, only the first request would do any valid operation.
+  - HEAD:
+    - to get the headers only.
+    - just like GET request but for just headers
+    - no body (for both req and resp)
+    - idempotent:
+      - just like GET request.
+  - OPTIONS:
+    - To ask for available communication options. (methods, CORS, headers)
+    - Browser will automatically send OPTIONS methods to check with server.
+    - has no body.
+    - idempotent.
+
+### 07.3 [Status Codes](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
+
+- It's only for responses, not requests.
+- Used to express the status of the response.
+- Ranges from 100-599:
+  - `100-199`
+    - for informational responses.
+  - `200-299`
+    - for successful responses.
+  - `300-399`
+    - for redirection.
+  - `400-499`
+    - for client errors
+  - `500-599`
+    - for server errors.
