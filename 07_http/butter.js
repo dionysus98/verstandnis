@@ -7,6 +7,7 @@ class Butter {
 
     // "[method] [path]": (req,res) => {};
     this._routes = {};
+    this._middlewares = [];
 
     this._server.on("request", (req, res) => {
       console.log("incoming request", req.url, req.method);
@@ -44,12 +45,39 @@ class Butter {
         });
       }
 
-      handler(req, res);
+      this._runMiddleware(this._middlewares, req, res, () => handler(req, res));
+
+      // if (this._middlewares.length) {
+      //   // run the middleware before router handler.
+      //   // maybe can be done better
+      //   [...this._middlewares].reverse().reduce(
+      //     (cb, middleware) => {
+      //       return () => middleware(req, res, cb);
+      //     },
+      //     () => handler(req, res),
+      //   )();
+      // } else {
+      //   handler(req, res);
+      // }
     });
   }
 
   route = (method, path, cb) => {
     this._routes[`${method.toLowerCase()} ${path}`] = cb;
+  };
+
+  beforeEach = (cb) => {
+    this._middlewares.push(cb);
+  };
+
+  _runMiddleware = ([...middlewares], req, res, cb) => {
+    if (!middlewares.length) {
+      return cb();
+    }
+
+    const middleware = middlewares.pop();
+
+    this._runMiddleware(middlewares, req, res, () => middleware(req, res, cb));
   };
 
   listen = (port, host, cb) => {
