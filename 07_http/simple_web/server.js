@@ -1,4 +1,4 @@
-const Butter = require("./butter");
+const Butter = require("../butter");
 const http = require("node:http");
 const fs = require("node:fs/promises");
 

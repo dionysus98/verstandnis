@@ -9,7 +9,7 @@ class Butter {
     this._routes = {};
 
     this._server.on("request", (req, res) => {
-      console.log("incoming request", req.headers);
+      console.log("incoming request", req.url, req.method);
     });
 
     this._server.on("request", (req, res) => {
@@ -43,7 +43,7 @@ class Butter {
           error: "not found",
         });
       }
-      
+
       handler(req, res);
     });
   }

@@ -469,3 +469,41 @@ Basic networking Concepts:
     - for client errors
   - `500-599`
     - for server errors.
+
+### 07.4 HTTP Proxy:
+
+- let's say 3 different node servers are running the same application. and we have different clients accessing the servers via Load balancer (HTTP proxy).
+- Proxy will grab the traffic from one client to server, and from server to client.
+- It's like a intermediate/middleman server between client and server.
+- So, a proxy would have it's own IP address with domain name.
+
+### 07.5 HTTP is Stateless.
+
+- No data is kept between different requests from clients to servers.
+- Hence, concepts like sessions, cookies, tokens etc are required to authenticate client's validity and to mimic stateful operation.
+- note: TCP is itself stateful.
+
+### 07.6 [HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies)
+
+- piece of data we send to the client (browser), and it's a convention to include the cookie to all the following requests.
+- Setting cookie in client:
+  - the server will include Set-Cookie header in it's response.
+    - Set-Cookie: key=value
+      - Set-Cookie: token=ab22!
+      - Set-Cookie: cart=321
+    - Set-Cookie: key=value;Expires=TimeStamp
+      - sets automatic expiration
+    - Set-Cookie: key=value;HttpOnly;
+      - HttpOnly property is used to avoid JS to modify the cookies.
+    - Set-Cookie: key=value;secure;
+      - only for https
+    - Set-Cookie: key=value; Path=/;
+      - only includes cookie to that path
+
+  - Each set-cookie header can only hold one key=value.
+  - As convention, the client will get it and save it to the disk. it's persisted to the disk.
+
+- Send cookie back to server:
+  - the client will include `Cookie` header in each request's header, by default.
+    - Cookie: key=value
+      - Cookie: token=ab22!
