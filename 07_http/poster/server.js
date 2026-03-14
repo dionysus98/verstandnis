@@ -26,34 +26,73 @@ const server = new Butter();
 
 // for auth.
 server.beforeEach((req, res, next) => {
-  console.log("mw1");
-  next(); // points to next middleware
+  const routesToAuth = [
+    "GET /api/user", "PUT /api/user", "POST /api/posts", "DELETE /api/logout"
+  ];
+
+  if (routesToAuth.indexOf(`${req.method} ${req.url}`) !== -1) {
+
+    if (!req.headers.cookie) {
+      return res.status(401).json({
+        error: "unauthorized",
+      })
+    }
+
+    const cookies = req.headers.cookie.split("; ").reduce((acc, v) => {
+      const [key, val] = v.split("=");
+      return { ...acc, [key]: val };
+    }, {});
+
+    const session = SESSIONS.find(({ token }) => token === cookies.token);
+
+
+
+    if (!session) {
+      return res.status(401).json({
+        error: "unauthorized",
+      });
+    }
+
+    req.userId = session.userId;
+  }
+
+  next();
 });
 
+// for JSON parse
 server.beforeEach((req, res, next) => {
-  setTimeout(() => {
-    console.log("mw2");
+  // very basic stuff, works weel only for smaller size bodies.
+  if (req.headers["content-type"] !== "application/json") {
+    return next();
+  }
+
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk.toString("utf-8");
+  });
+
+  req.on("end", () => {
+    body = JSON.parse(body);
+    req.body = body;
     next(); // points to next middleware
-  }, 2000);
+  })
 
-  // console.log("mw2");
-  // next(); // points to next middleware
 });
 
+// for routes requiring index.html
 server.beforeEach((req, res, next) => {
-  console.log("mw3");
-  next(); // points to the actual route
+  const routes = ["/", "/login", "/profile", "/new-post"];
+
+  if (routes.indexOf(req.url) === -1 || req.method !== "GET") {
+    return next();
+  }
+
+  res.status(200).sendFile(__dirname + "/public/index.html", "text/html");
+
+  // next(); // don't call the next here. 
 });
 
 // === files routes ===
-
-server.route("get", "/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html", "text/html");
-});
-
-server.route("get", "/login", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html", "text/html");
-});
 
 server.route("get", "/styles.css", (req, res) => {
   res.sendFile(__dirname + "/public/styles.css", "text/css");
@@ -73,63 +112,44 @@ server.route("get", "/api/posts", (req, res) => {
   );
 });
 
-server.route("post", "/api/posts", (req, res) => {});
+server.route("post", "/api/posts", (req, res) => { });
 
 server.route("post", "/api/login", (req, res) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString("utf-8");
-  });
+  const body = req.body;
 
-  req.on("end", () => {
-    body = JSON.parse(body);
+  const user = USERS.find(
+    (user) =>
+      user.username === body.username && user.password === body.password,
+  );
 
-    const user = USERS.find(
-      (user) =>
-        user.username === body.username && user.password === body.password,
-    );
-
-    if (!user) {
-      return res.status(401).json({
-        error: "invalid username or password",
-      });
-    }
-
-    const token = Math.floor(Math.random() * 10000000000).toString();
-
-    SESSIONS.push({
-      userId: user.id,
-      token: token,
-    });
-
-    res.setHeader("Set-Cookie", [
-      `token=${token}; Path=/;`,
-      `username=${user.username}; Path=/;`,
-    ]);
-
-    res.status(200).json({
-      message: "login success",
-    });
-  });
-});
-
-server.route("delete", "/api/logout", (req, res) => {});
-
-server.route("get", "/api/user", (req, res) => {
-  const cookies = req.headers.cookie.split("; ").reduce((acc, v) => {
-    const [key, val] = v.split("=");
-    return { ...acc, [key]: val };
-  }, {});
-
-  const session = SESSIONS.find(({ token }) => token === cookies.token);
-
-  if (!session) {
+  if (!user) {
     return res.status(401).json({
-      error: "unauthorized",
+      error: "invalid username or password",
     });
   }
 
-  const user = USERS.find((user) => user.id === session.userId);
+  const token = Math.floor(Math.random() * 10000000000).toString();
+
+  SESSIONS.push({
+    userId: user.id,
+    token: token,
+  });
+
+  res.setHeader("Set-Cookie", [
+    `token=${token}; Path=/;`,
+    `username=${user.username}; Path=/;`,
+  ]);
+
+  res.status(200).json({
+    message: "login success",
+  });
+});
+
+server.route("delete", "/api/logout", (req, res) => { });
+
+server.route("get", "/api/user", (req, res) => {
+
+  const user = USERS.find((user) => user.id === req.userId);
 
   if (!user) {
     return res.status(404).json({
@@ -143,7 +163,7 @@ server.route("get", "/api/user", (req, res) => {
   });
 });
 
-server.route("put", "/api/user", (req, res) => {});
+server.route("put", "/api/user", (req, res) => { });
 
 // === start server ===
 server.listen(PORT, HOST, () => {

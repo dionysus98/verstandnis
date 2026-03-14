@@ -37,13 +37,18 @@ class Butter {
 
       const route = `${req.method.toLowerCase()} ${req.url}`;
 
-      const handler = this._routes[route];
+      // TODO: maybe rewrite this, blyat
+      const handler = this._routes[route] || function (req, res) {
+        res.end()
+      };
 
-      if (typeof handler !== "function") {
-        return res.status(404).json({
-          error: "not found",
-        });
-      }
+
+
+      // if (typeof handler !== "function") {
+      //   return res.status(404).json({
+      //     error: "not found",
+      //   });
+      // }
 
       this._runMiddleware(this._middlewares, req, res, () => handler(req, res));
 
