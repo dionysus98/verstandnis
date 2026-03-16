@@ -507,3 +507,78 @@ Basic networking Concepts:
   - the client will include `Cookie` header in each request's header, by default.
     - Cookie: key=value
       - Cookie: token=ab22!
+
+## 08. UNIX
+
+### 08.1 shell
+
+- A shell is just a process/application running on top of kernel
+- A shell communicates to OS via syscalls.
+  - network ops
+  - memory alloc
+  - etc
+- Shell itself is usually a C[kinda] application.
+- quick notes about MAN pages:
+  - unix manual pages
+  - split in three sections
+    - section 1 - General commands
+    - section 2 - System calls
+    - section 3 - library functions
+- Usually shell accessed via Terminal(TTY)
+  - terminal will request for shell process to kernal
+  - kernal will spawn a new shell process from the storage.
+  - And the terminal will be running the shell for us.
+- There are different version for shell.
+  - sh (thompson shell) 1971
+  - sh (Bourne shell) 1979
+  - bash (Bourne-again shell) 1989 (default for most)
+  - zsh (Z shell) 1990
+  - fish
+
+- bash execution order:
+  - when a command is run, shell looks for:
+    - Aliases
+    - user functions
+    - Built-in functions
+      - eg: echo
+    - PATH
+  - so, in node:
+    - `spawn` only looks for PATH. (i.e. executables)
+      - it starts a subprocess for that exe.
+    - `exec` runs stuff in a shell. (in non-login, non-interactive way, look below for more)
+
+### 08.2 File permission
+
+- there are 3 different permission
+  - r (Read)
+  - w (write)
+  - x (executable)
+- a file can have all permission
+- format (try ls -l):
+  (note: d is the type if the file, whether is directory or not )
+  - `drwx`
+  - `-rwx`
+  - `dr--`
+  - ...etc
+
+### 08.3 Shell configs
+
+- A shell can either be:
+  - Login
+    - A login shell will run some config files before starting
+  - Non-Login
+    - starts as is.
+- And A shell can either be:
+  - interactive:
+    - Interactive will also run some config files
+    - eg: `$ bash`
+  - non-interactive:
+    - runs as is.
+    - eg: `$ bash ./start-server.sh`
+
+- Bash Login shell:
+  - when login shell boots up it'll run through these files in order:
+    - /etc/profile
+    - ~/.bash_profile || ~/.bash_login || ~/.profile
+    - ~/.bashrc (sources it)
+  - by default on linux, it opens a non login shell on new tabs. use `$ bash -l` for loginshell
