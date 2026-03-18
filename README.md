@@ -582,3 +582,38 @@ Basic networking Concepts:
     - ~/.bash_profile || ~/.bash_login || ~/.profile
     - ~/.bashrc (sources it)
   - by default on linux, it opens a non login shell on new tabs. use `$ bash -l` for loginshell
+
+### 08.4 child process
+
+- in unix on top of kernel, we'd have different process opened up with each process have it's own ID (PID).
+- and each process would also have Parent's process id with it (PPID)
+- Kernel would be the root/Main parent with ID=0.
+- Each process has ability to start new process.
+- these process are sitting inside the RAM.
+  - hence more process more memory.
+- eg:
+  - bash (pid: 33, ppid:0)
+    - node process (pid: 34, ppid: 33)
+    - python (pid:35, ppid: 33)
+  - use `$ echo $$` to check shell's process
+  - use `process.pid` in node.
+- the child process would get all ENV vars from parent process.
+- if a process has no parent process, it's called a zombie process,(todo look about it more).
+- so, in node the `spawn` object would be starting a new child process for unix execs.
+
+### 08.5 Stdout, stdin, stderr
+
+Data streams:
+
+- stdin (0):
+  - by default, when starting unix in tty your stdin would be connected to your keyboard
+  - eg:
+    - tty -> keyboard -> stdin
+- stdout (1):
+  - eg:
+    - stdout -> tty -> Monitor
+- stderr (2):
+  - eg:
+    - stderr -> tty -> Monitor
+
+- two different process can be attached by connecting stdout of appA to stdin of appB
